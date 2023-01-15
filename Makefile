@@ -2,7 +2,7 @@
 
 all: wbui.mo wbui.bin
 
-wbui.bin:
+wbui.bin: *.py wbui/*.py
 	python setup.py clean --all
 	python setup.py bdist_wheel
 	echo '#!/usr/bin/python' > $@

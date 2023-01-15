@@ -1,8 +1,8 @@
+import sys,getpass
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("GLib", "2.0")
 from gi.repository import Gtk, Gdk, GLib,GdkPixbuf, GObject
-import getpass
 import pam,cairo
 
 import wbui.theme
@@ -66,7 +66,7 @@ class TitleWindow(Gtk.ApplicationWindow):
         self.set_child(image)
         self.present()
 
-        GLib.timeout_add(1, self.on_timeout)
+        GLib.timeout_add(3, self.on_timeout)
 
     def on_timeout(self):
         dlg = Gtk.MessageDialog(buttons=Gtk.ButtonsType.OK,modal=True,title="ようこそ",transient_for=self)
@@ -77,9 +77,11 @@ class TitleWindow(Gtk.ApplicationWindow):
 
     def on_enter_key(self, dlg, response):
         dlg.destroy()
-        if response != Gtk.ResponseType.OK or pam.authenticate(getpass.getuser(), "", service="wbui"):
+        if response == Gtk.ResponseType.OK and pam.authenticate(getpass.getuser(), "", service="wbui"):
             self.destroy()
             return
+        elif response != Gtk.ResponseType.OK:
+            sys.exit(1)
         #else
         password_dlg = PasswordDialog(self)
         password_dlg.connect("done", self.on_password_done)

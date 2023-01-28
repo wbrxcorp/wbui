@@ -63,7 +63,7 @@ class TitleWindow(Gtk.ApplicationWindow):
         context.move_to((surface.get_width() - copyright_extents.width) / 2,  surface.get_height() - copyright_extents.height)
         context.show_text(copyright)
         image = create_gtk_picture_from_surface(surface)
-        self.set_child(image)
+        self.set_child(image)   # TODO: show hostname
         self.present()
 
         GLib.timeout_add(3, self.on_timeout)

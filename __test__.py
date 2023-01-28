@@ -5,11 +5,9 @@ from gi.repository import Gtk,GLib
 
 import gettext,getpass
 
-import pam
-
 #import pyte
 
-import wbui.login
+import wbui,wbui.login
 
 class TestWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
@@ -26,7 +24,7 @@ class TestWindow(Gtk.ApplicationWindow):
 
 if __name__ == "__main__":
     #print(gettext.find("wbui", "./locale",["ja"]))
-
-    app = Gtk.Application(application_id="com.walbrix.WBUITest")
-    app.connect("activate", lambda x: wbui.login.TitleWindow(app))
+    app = Gtk.Application(application_id="com.walbrix.WBUI")
+    app.connect("activate", lambda x: wbui.MainWindow(app, True))
     app.run()
+    print(wbui.shutdown.shutdown_flag)

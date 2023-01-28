@@ -1,4 +1,4 @@
-import sys,getpass
+import sys,getpass,socket
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("GLib", "2.0")
@@ -62,6 +62,10 @@ class TitleWindow(Gtk.ApplicationWindow):
         copyright_extents = context.text_extents(copyright)
         context.move_to((surface.get_width() - copyright_extents.width) / 2,  surface.get_height() - copyright_extents.height)
         context.show_text(copyright)
+        hostname = socket.gethostname()
+        hostname_extents = context.text_extents(hostname)
+        context.move_to(surface.get_width() - hostname_extents.width - hostname_extents.height, hostname_extents.height)
+        context.show_text(hostname)
         image = create_gtk_picture_from_surface(surface)
         self.set_child(image)   # TODO: show hostname
         self.present()

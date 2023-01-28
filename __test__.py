@@ -24,7 +24,8 @@ class TestWindow(Gtk.ApplicationWindow):
 
 if __name__ == "__main__":
     #print(gettext.find("wbui", "./locale",["ja"]))
-    app = Gtk.Application(application_id="com.walbrix.WBUI")
+    app = Gtk.Application()
     app.connect("activate", lambda x: wbui.MainWindow(app, True))
+    #app.connect("activate", lambda x: wbui.login.TitleWindow(app))
     app.run()
     print(wbui.shutdown.shutdown_flag)

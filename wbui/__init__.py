@@ -2,19 +2,12 @@ import subprocess
 
 import gi
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk,Gdk,GLib
+from gi.repository import Gtk
 
-import wbui.process,wbui.theme,wbui.header,wbui.footer,wbui.shutdown
+import wbui.process,wbui.theme,wbui.header,wbui.footer,wbui.shutdown,wbui.status_page
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 768
-
-class StatusPage(Gtk.Box):
-    def __init__(self):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
-        label = Gtk.Label()
-        label.set_markup("STATUS PAGE TBD")
-        self.append(label)
 
 class ConsolePage(Gtk.Box):
     def __init__(self):
@@ -39,7 +32,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # setup main stack
         stack = Gtk.Stack()
-        stack.add_titled(StatusPage(), "status", "状態")
+        stack.add_titled(wbui.status_page.StatusPage(), "status", "状態")
         stack.add_titled(ConsolePage(), "console", "Linuxコンソール")
         stack.add_titled(wbui.shutdown.ShutdownPage(self, login), "shutdown", "終了と再起動" if login else "終了")
 

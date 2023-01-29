@@ -2,7 +2,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 
-import wbui.process,wbui.theme,wbui.header,wbui.footer,wbui.console,wbui.shutdown,wbui.status_page
+import wbui.process,wbui.theme,wbui.header,wbui.footer,wbui.console,wbui.shutdown,wbui.status
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 768
@@ -18,7 +18,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # setup main stack
         stack = Gtk.Stack()
-        stack.add_titled(wbui.status_page.StatusPage(), "status", "状態")
+        stack.add_titled(wbui.status.StatusPage(), "status", "システム情報")
         stack.add_titled(wbui.console.ConsolePage(), "console", "Linuxコンソール")
         stack.add_titled(wbui.shutdown.ShutdownPage(self, "LOGIN" if login else None), "shutdown", "終了と再起動" if login else "終了")
 

@@ -7,8 +7,9 @@ from gi.repository import Gtk
 import wbui.process
 
 class StatusPage(Gtk.Box):
-    def __init__(self):
+    def __init__(self, mode = None):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        self.mode = mode
         self.grid = Gtk.Grid()
         self.grid.set_margin_top(8)
         self.grid.set_margin_start(8)
@@ -43,12 +44,12 @@ class StatusPage(Gtk.Box):
             return
         #else
         system_status = result["return"]
-        serial_number = system_status["serial_number"]
+        serial_number = system_status["serial_number"] if self.mode is None else "N/A"
         kernel_version = system_status["kernel_version"]
-        ip_address = system_status["ip_address"] if "ip_address" in system_status else "不明"
-        cpu_model = system_status["cpu_model"] if "cpu_model" in system_status else "不明"
-        cpus = system_status["cpus"] if "cpus" in system_status else "不明"
-        clock = "不明"
+        ip_address = system_status["ip_address"] if "ip_address" in system_status else "N/A"
+        cpu_model = system_status["cpu_model"] if "cpu_model" in system_status else "N/A"
+        cpus = system_status["cpus"] if "cpus" in system_status else "N/A"
+        clock = "N/A"
         if "clock" in system_status:
             clock = "%dMHz" % (system_status["clock"]["current"] / 1000)
             if "min" in system_status["clock"] and "max" in system_status["clock"]:
@@ -56,7 +57,7 @@ class StatusPage(Gtk.Box):
                 max = system_status["clock"]["max"]
                 if min > 0 and max > 0:
                     clock = "%d-%dMHz" % (min / 1000, max / 1000)
-        memory = "不明"
+        memory = "N/A"
         if "memory" in system_status:
             unused = system_status["memory"]["unused"]
             total = system_status["memory"]["total"]

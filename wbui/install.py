@@ -2,7 +2,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk,Gdk
 
-import wbui,wbui.process,wbui.shutdown
+import wbui,wbui.process,wbui.status,wbui.console,wbui.shutdown
 
 class Header(Gtk.DrawingArea):
     def __init__(self):
@@ -119,6 +119,7 @@ class InstallerWindow(Gtk.ApplicationWindow):
         # setup main stack
         stack = Gtk.Stack(hexpand=True)
         stack.add_titled(InstallerPage(self), "install", "インストール")
+        stack.add_titled(wbui.status.StatusPage("INSTALLER"), "status", "システム情報")
         stack.add_titled(wbui.console.ConsolePage(), "console", "Linuxコンソール")
         stack.add_titled(wbui.shutdown.ShutdownPage(self, "INSTALLER"), "shutdown", "終了と再起動")
 

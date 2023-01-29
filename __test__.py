@@ -25,7 +25,7 @@ class TestWindow(Gtk.ApplicationWindow):
 if __name__ == "__main__":
     #print(gettext.find("wbui", "./locale",["ja"]))
     app = Gtk.Application()
-    #app.connect("activate", lambda x: wbui.MainWindow(app, True))
+    app.connect("activate", lambda x: wbui.MainWindow(app, True))
     #app.connect("activate", lambda x: wbui.login.TitleWindow(app))
-    app.connect("activate", lambda x: wbui.install.InstallerWindow(app))
+    #app.connect("activate", lambda x: wbui.install.InstallerWindow(app))
     app.run()

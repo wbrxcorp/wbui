@@ -30,10 +30,16 @@ class StatusPage(Gtk.Box):
         self.append(self.kvm_warning)
 
         wbui.process.WbSimpleInvoke({"execute":"system-status"}, self.done_system_status)
-    def done_system_status(self, status, stdout, stderr):
-        result = json.loads(stdout)
+
+    def system_status_fail(self):
+        wbui.footer.get_instance().set_message("エラー:システム情報の取得に失敗しました")
+
+    def done_system_status(self, status, result, stderr):
+        if status != 0:
+            self.system_status_fail()
+            return
         if "return" not in result:
-            wbui.footer.get_instance().set_message("エラー:システム情報の取得に失敗しました")
+            self.system_status_fail()
             return
         #else
         system_status = result["return"]

@@ -7,7 +7,7 @@ import gettext,getpass
 
 #import pyte
 
-import wbui,wbui.login
+import wbui,wbui.login,wbui.install
 
 class TestWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
@@ -25,7 +25,7 @@ class TestWindow(Gtk.ApplicationWindow):
 if __name__ == "__main__":
     #print(gettext.find("wbui", "./locale",["ja"]))
     app = Gtk.Application()
-    app.connect("activate", lambda x: wbui.MainWindow(app, True))
+    #app.connect("activate", lambda x: wbui.MainWindow(app, True))
     #app.connect("activate", lambda x: wbui.login.TitleWindow(app))
+    app.connect("activate", lambda x: wbui.install.InstallerWindow(app))
     app.run()
-    print(wbui.shutdown.shutdown_flag)

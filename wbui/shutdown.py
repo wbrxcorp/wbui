@@ -6,14 +6,17 @@ shutdown_page = None
 shutdown_flag = None
 
 class ShutdownPage(Gtk.Box):
-    def __init__(self, main_window, login):
+    def __init__(self, main_window, mode=None):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         self.main_window = main_window
-        self.login = login
-        exit_button = Gtk.Button.new_with_mnemonic("タイトルに戻る(_X)" if login else "終了(_X)")
-        exit_button.connect("clicked", self.on_exit)
-        self.append(exit_button)
-        if login:
+        self.mode = mode
+
+        if mode != "INSTALLER":
+            exit_button = Gtk.Button.new_with_mnemonic("タイトルに戻る(_X)" if mode == "LOGIN" else "終了(_X)")
+            exit_button.connect("clicked", self.on_exit)
+            self.append(exit_button)
+
+        if mode is not None:
             shutdown_button = Gtk.Button.new_with_mnemonic("シャットダウン(_S)")
             shutdown_button.connect("clicked", self.on_shutdown)
             self.append(shutdown_button)
@@ -23,7 +26,7 @@ class ShutdownPage(Gtk.Box):
     
     def on_exit(self, button):
         dlg = Gtk.MessageDialog(buttons=Gtk.ButtonsType.OK_CANCEL,modal=True,title="確認",transient_for=self.main_window)
-        dlg.set_markup("タイトル画面へ戻ります。よろしいですか？" if self.login else "終了してもよろしいですか？")
+        dlg.set_markup("タイトル画面へ戻ります。よろしいですか？" if self.mode == "LOGIN" else "終了してもよろしいですか？")
         dlg.connect('response', self.on_exit_response)
         dlg.show()
     

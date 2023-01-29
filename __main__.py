@@ -19,7 +19,12 @@ if __name__ == "__main__":
             app = Gtk.Application()
             app.connect("activate", lambda x: wbui.install.InstallerWindow(app))
             app.run()
-            subprocess.call("reboot")
+            if wbui.shutdown.shutdown_flag == "SHUTDOWN":
+                subprocess.call("poweroff")
+            if wbui.shutdown.shutdown_flag == "REBOOT":
+                subprocess.call("reboot")
+            #else
+            sys.exit(0)
 
     app = Gtk.Application()
     app.connect("activate", lambda x: wbui.MainWindow(app, login))

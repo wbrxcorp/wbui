@@ -2,7 +2,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk,Gdk
 
-import wbui,wbui.process
+import wbui,wbui.process,wbui.shutdown
 
 class Header(Gtk.DrawingArea):
     def __init__(self):
@@ -62,6 +62,10 @@ class InstallerPage(Gtk.Box):
                 disk["model"] if "model" in disk else "-",
                 disk["tran"] if "tran" in disk else "-",
                 "%dGB" % (disk["size"] / 1024.0 / 1024 / 1024)])
+        if self.liststore.get_iter_first() is None:
+            wbui.footer.get_instance().set_message("インストール可能な記憶媒体がありません")
+        else:
+            self.treeview.set_cursor(0)
     
     def on_tree_selection_changed(self, selection):
         model, treeiter = selection.get_selected()
@@ -87,6 +91,7 @@ class InstallerPage(Gtk.Box):
             dlg = Gtk.MessageDialog(buttons = Gtk.ButtonsType.OK, modal = True, 
                 text = "インストールが完了しました。\nシステムを再起動します。", transient_for=self.parent)
             def on_response(dlg, response):
+                wbui.shutdown.shutdown_flag = "REBOOT"
                 dlg.destroy()
                 self.parent.destroy()
             dlg.connect('response', on_response)
@@ -111,8 +116,21 @@ class InstallerWindow(Gtk.ApplicationWindow):
 
         vbox.append(Header())
 
-        vbox.append(InstallerPage(self))
-        
+        # setup main stack
+        stack = Gtk.Stack(hexpand=True)
+        stack.add_titled(InstallerPage(self), "install", "インストール")
+        stack.add_titled(wbui.console.ConsolePage(), "console", "Linuxコンソール")
+        stack.add_titled(wbui.shutdown.ShutdownPage(self, "INSTALLER"), "shutdown", "終了と再起動")
+
+        sidebar = Gtk.StackSidebar()
+        sidebar.set_stack(stack)
+
+        sidebar_stack_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, vexpand=True)
+        sidebar_stack_box.append(sidebar)
+        sidebar_stack_box.append(stack)
+
+        vbox.append(sidebar_stack_box)
+
         footer = wbui.footer.get_instance()
         vbox.append(footer)
         footer.set_message("Walbrixインストーラーへようこそ")

@@ -1,3 +1,5 @@
+PREFIX ?= /usr/local
+
 .SUFFIXES: .mo .po
 
 all: wbui.mo wbui.bin
@@ -17,3 +19,5 @@ clean:
 .po.mo:
 	msgfmt $< -o $@
 
+install:
+	install -Dm755 wbui.bin $(DESTDIR)$(PREFIX)/bin/wbui
